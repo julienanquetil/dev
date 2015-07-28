@@ -5,7 +5,7 @@
  *
  * @description : Scrappe les 25 dernieres images d'une recherche pinterest
  * @author  julien.anquetil
- * @version 1.0
+ * @version 1.1
  */
 ?>
 <!DOCTYPE html>
