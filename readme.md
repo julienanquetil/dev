@@ -6,6 +6,8 @@ Scrapper récuperant les images d'une recherche Pinterest.
   - Récuperer les images si seulement elle n'existe déja pas dans le dossier img
 
 ### Version
+1.2 : correction de la recherche
+
 1.1 : Ajout du style "bootstrap"
 
 1.0 : Initial commit

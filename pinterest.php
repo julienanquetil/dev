@@ -5,7 +5,7 @@
  *
  * @description : Scrappe les 25 dernieres images d'une recherche pinterest
  * @author  julien.anquetil
- * @version 1.1
+ * @version 1.2
  */
 ?>
 <!DOCTYPE html>
@@ -53,7 +53,8 @@ function ImageName($filePath) {
 }
 
 if (isset($_GET["search"])) {
-    $search = $_GET["search"];
+    $search = urlencode($_GET["search"]);
+    
     $url = "https://www.pinterest.com/search/pins/?q=" . $search;
 
     //Creation de l'authentification
