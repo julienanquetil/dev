@@ -17,30 +17,35 @@ $ProxyIp = '';
 $ProxyLogin = '';
 $ProxyPassword = '';
 
-//Creation de l'authentification
-$auth = base64_encode($ProxyLogin . ':' . $ProxyPassword);
-$Context = array(
-    'http' => array(
-        'proxy' => 'tcp://' . $ProxyIp,
-        'request_fulluri' => true,
-        'header' => "Proxy-Authorization: Basic $auth",
-    ),
-);
-$cxContext = stream_context_create($Context);
-
 function ImageName($filePath) {
     $fileParts = pathinfo($filePath);
     if (!isset($fileParts['filename'])) {
         $fileParts['filename'] = substr($fileParts['basename'], 0, strrpos($fileParts['basename'], '.'));
     }
-    return $fileParts[basename];
+    return $fileParts['basename'];
 }
 
 if (isset($_GET["search"])) {
     $search = $_GET["search"];
     $url = "https://www.pinterest.com/search/pins/?q=" . $search;
 
-    $doc = file_get_contents($url, False, $cxContext);
+    //Creation de l'authentification
+    if ($ProxyIp != '') {
+        $auth = base64_encode($ProxyLogin . ':' . $ProxyPassword);
+        $Context = array(
+            'http' => array(
+                'proxy' => 'tcp://' . $ProxyIp,
+                'request_fulluri' => true,
+                'header' => "Proxy-Authorization: Basic $auth",
+            ),
+        );
+        $cxContext = stream_context_create($Context);
+
+        $doc = file_get_contents($url, False, $cxContext);
+    } else {
+        $doc = file_get_contents($url);
+    }
+
     $classname = "pinImg fullBleed loaded fade";
     $domdocument = new DOMDocument();
     libxml_use_internal_errors(true);
