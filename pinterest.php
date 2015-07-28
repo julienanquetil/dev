@@ -88,9 +88,9 @@ if (isset($_GET["search"])) {
         if (!file_exists("img/" . $image_name)) {
             $image = file_get_contents($url_big);
             file_put_contents("img/" . $image_name, $image);
-            echo ' <div class="col-md-2"><img src="' . $url_image . '"  class="img-responsive"/><p class="text-info"> Récupérée</p></div>' . PHP_EOL;
+            echo ' <div class="col-md-2"><img src="' . $url_image . '"  class="img-responsive"/><p class="text-info text-center "> Récupérée</p></div>' . PHP_EOL;
         } else {
-            echo '<div class="col-md-2"><img src="' . $url_image . '"  class="img-responsive"/><p class="text-danger"> Existe deja</p></div>' . PHP_EOL;
+            echo '<div class="col-md-2"><img src="' . $url_image . '"  class="img-responsive"/><p class="text-danger text-center "> Existe deja</p></div>' . PHP_EOL;
         }
     }
 	echo '</div>';
