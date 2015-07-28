@@ -7,4 +7,5 @@ Scrapper récuperant les images d'une recherche Pinterest.
 
 ### Version
 1.1 : Ajout du style "bootstrap"
+
 1.0 : Initial commit
