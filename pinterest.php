@@ -7,12 +7,39 @@
  * @author  julien.anquetil
  * @version 1.0
  */
-header('Content-Type: text/html; charset=utf-8');
+?>
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Scraper Pinterest</title>
 
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+	<style type="text/css">
+		img {max-height:200px;}
+	</style>
+</head>
+  <body>
+<div class="container">
+<h1>Rechercher des images a scrapper sur Pinterest</h1>
+<form>
+<div class="form-group">
+    <label for="search">Mot a rechercher</label>
+	<div class="input-group">
+		<input type="text" name="search" class="form-control" id="search" placeholder="Recherche">
+		<div class="input-group-addon"><i class="glyphicon glyphicon-search"></i></div>
+  </div>
+   <button type="submit" class="btn btn-default">Rechercher</button>
+</form>
+  
+<?php
 /**
  * Configuration
  */
-//Paramertres du proxy
+//Parametres du proxy
 $ProxyIp = '';
 $ProxyLogin = '';
 $ProxyPassword = '';
@@ -52,8 +79,8 @@ if (isset($_GET["search"])) {
     $domdocument->loadHTML($doc);
     $a = new DOMXPath($domdocument);
     $imgs = $a->query('//img[contains(@class,"pinImg")]');
-
-
+	echo '<h2>Résultat de la recherche : <span class="text-success">'.$search.'</span></h2>';
+	echo '<div class="row row-eq-height">';
     foreach ($imgs as $img) {
         $url_image = $img->getAttribute('src');
         $image_name = ImageName($url_image);
@@ -61,15 +88,18 @@ if (isset($_GET["search"])) {
         if (!file_exists("img/" . $image_name)) {
             $image = file_get_contents($url_big);
             file_put_contents("img/" . $image_name, $image);
-            echo '<img src="' . $img->getAttribute('src') . '" /> récupérée <br/>' . PHP_EOL;
+            echo ' <div class="col-md-2"><img src="' . $url_image . '"  class="img-responsive"/><p class="text-info"> Récupérée</p></div>' . PHP_EOL;
         } else {
-            echo '<img src="' . $img->getAttribute('src') . '" /> existe deja<br />' . PHP_EOL;
+            echo '<div class="col-md-2"><img src="' . $url_image . '"  class="img-responsive"/><p class="text-danger"> Existe deja</p></div>' . PHP_EOL;
         }
     }
+	echo '</div>';
 }
 
-echo '<form>';
-echo '<input type="text" name="search" id="search" placeholder="recherche">';
-echo '<input type="submit" value="rechercher">';
-echo '</form>';
 ?>
+
+  </div>
+  <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  </body>
+</html>
