@@ -53,7 +53,8 @@ function ImageName($filePath) {
 }
 
 if (isset($_GET["search"])) {
-    $search = urlencode($_GET["search"]);
+	fopen("content.html", "w");
+	$search = urlencode($_GET["search"]);
     
     $url = "https://www.pinterest.com/search/boards/?q=" . $search;
 
