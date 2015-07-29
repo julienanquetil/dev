@@ -25,5 +25,6 @@ Scrapper récuperant les images d'une recherche flickr.
   - Récupere les images correspondant aux licence creativecommons
 
 ### Version
+1.1 : Ajout de la selection des licences
 
 1.0 : Initial commit

@@ -5,7 +5,7 @@
  *
  * @description : Scrappe les 500 dernières images d'une recherche flickr
  * @author  julien.anquetil
- * @version 1.0
+ * @version 1.1
  */
 ?>
 <!DOCTYPE html>
@@ -25,9 +25,19 @@
   <body>
 <div class="container">
 <h1>Rechercher des images a scrapper sur flickr</h1>
-<form>
+<form method="post">
+<div class="checkbox"><label><input type="checkbox" name="licence[]" value="0" />All Rights Reserved</label></div>
+<div class="checkbox"><label><input type="checkbox" name="licence[]" value="1" /><a href="http://creativecommons.org/licenses/by-nc-sa/2.0/">Attribution-NonCommercial-ShareAlike License</a></label></div>
+<div class="checkbox"><label><input type="checkbox" name="licence[]" value="2" /><a href="http://creativecommons.org/licenses/by-nc/2.0/">Attribution-NonCommercial License</a></label></div>
+<div class="checkbox"><label><input type="checkbox" name="licence[]" value="3" /><a href="http://creativecommons.org/licenses/by-nc-nd/2.0/">Attribution-NonCommercial-NoDerivs License</a></label></div>
+<div class="checkbox"><label><input type="checkbox" name="licence[]" value="4" /><a href="http://creativecommons.org/licenses/by/2.0/">Attribution License</a></label></div>
+<div class="checkbox"><label><input type="checkbox" name="licence[]" value="5" /><a href="http://creativecommons.org/licenses/by-sa/2.0/">Attribution-ShareAlike License</a></label></div>
+<div class="checkbox"><label><input type="checkbox" name="licence[]" value="6" /><a href="http://creativecommons.org/licenses/by-nd/2.0/">Attribution-NoDerivs License</a></label></div>
+<div class="checkbox"><label><input type="checkbox" name="licence[]" value="7" /><a href="http://flickr.com/commons/usage/">No known copyright restrictions</a></label></div>
+<div class="checkbox"><label><input type="checkbox" name="licence[]" value="8" /><a href="http://www.usa.gov/copyright.shtml">United States Government Work</a></label></div>
 <div class="form-group">
     <label for="search">Mot a rechercher</label>
+	
 	<div class="input-group">
 		<input type="text" name="search" class="form-control" id="search" placeholder="Recherche">
 		<div class="input-group-addon"><i class="glyphicon glyphicon-search"></i></div>
@@ -58,10 +68,21 @@ function xml2array ( $xmlObject, $out = array () )
 }
 
 
-if (isset($_GET["search"])) {
+if (isset($_POST["search"])) {
 	
-	$search = urlencode($_GET["search"]);
-    $url = "https://api.flickr.com/services/rest/?method=flickr.photos.search&license=1,2,3,4,5,6,7&api_key=83cd8be1b18560cc98780bdb876694e7&tags=".$search."&per_page=500" ;
+	$search = urlencode($_POST["search"]);
+	
+	$licences_array = $_POST['licence'];
+	$licences='';
+    for ($i=0; $i<count($licences_array); $i++) {
+        $licences .= $licences_array[$i];
+		if ($i!=(count($licences_array) -1)){
+			$licences .=",";
+		}
+    }
+
+	
+    $url = "https://api.flickr.com/services/rest/?method=flickr.photos.search&license=".$licences."&api_key=83cd8be1b18560cc98780bdb876694e7&tags=".$search."&per_page=500" ;
 
     //Creation de l'authentification
     if ($ProxyIp != '') {
