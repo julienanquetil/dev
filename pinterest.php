@@ -43,7 +43,13 @@
 $ProxyIp = '';
 $ProxyLogin = '';
 $ProxyPassword = '';
-fopen("content.html", "w");
+if (!file_exists('img/')) {
+    mkdir('img/', 0777, true);
+}
+fopen("img/content.html", "w");
+
+
+
 function ImageName($filePath) {
     $fileParts = pathinfo($filePath);
     if (!isset($fileParts['filename'])) {
@@ -71,15 +77,15 @@ if (isset($_GET["search"])) {
         $cxContext = stream_context_create($Context);
 
         $doc = file_get_contents($url, False, $cxContext);
-		file_put_contents('content.html',$doc);
+		file_put_contents('img/content.html',$doc);
     } else {
         $doc = file_get_contents($url);
-		file_put_contents('content.html',$doc);
+		file_put_contents('img/content.html',$doc);
     }
 	
     $domdocument = new DOMDocument();
     libxml_use_internal_errors(true);
-    $domdocument->loadHTMLFile('content.html');
+    $domdocument->loadHTMLFile('img/content.html');
     $a = new DOMXPath($domdocument);
     $imgs = $a->query('//img[contains(@class,"thumb")]');
 
