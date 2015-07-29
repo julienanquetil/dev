@@ -43,7 +43,7 @@
 $ProxyIp = '';
 $ProxyLogin = '';
 $ProxyPassword = '';
-
+fopen("content.html", "w");
 function ImageName($filePath) {
     $fileParts = pathinfo($filePath);
     if (!isset($fileParts['filename'])) {
@@ -53,7 +53,7 @@ function ImageName($filePath) {
 }
 
 if (isset($_GET["search"])) {
-	fopen("content.html", "w");
+	
 	$search = urlencode($_GET["search"]);
     
     $url = "https://www.pinterest.com/search/boards/?q=" . $search;
