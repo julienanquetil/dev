@@ -70,6 +70,7 @@ if (isset($_GET["search"])) {
         $cxContext = stream_context_create($Context);
 
         $doc = file_get_contents($url, False, $cxContext);
+		file_put_contents('content.html',$doc);
     } else {
         $doc = file_get_contents($url);
 		file_put_contents('content.html',$doc);
