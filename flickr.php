@@ -61,7 +61,7 @@ function xml2array ( $xmlObject, $out = array () )
 if (isset($_GET["search"])) {
 	
 	$search = urlencode($_GET["search"]);
-    $url = "https://api.flickr.com/services/rest/?method=flickr.photos.search&license&api_key=83cd8be1b18560cc98780bdb876694e7&tags=".$search."&per_page=500" ;
+    $url = "https://api.flickr.com/services/rest/?method=flickr.photos.search&license=1,2,3,4,5,6,7&api_key=83cd8be1b18560cc98780bdb876694e7&tags=".$search."&per_page=500" ;
 
     //Creation de l'authentification
     if ($ProxyIp != '') {
