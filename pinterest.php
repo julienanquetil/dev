@@ -3,9 +3,9 @@
 /**
  * Projet Korleon - Pinterest 
  *
- * @description : Scrappe les 25 dernieres images d'une recherche pinterest
+ * @description : Scrappe les 150 dernières images d'une recherche pinterest
  * @author  julien.anquetil
- * @version 1.2
+ * @version 1.3
  */
 ?>
 <!DOCTYPE html>
@@ -55,7 +55,7 @@ function ImageName($filePath) {
 if (isset($_GET["search"])) {
     $search = urlencode($_GET["search"]);
     
-    $url = "https://www.pinterest.com/search/pins/?q=" . $search;
+    $url = "https://www.pinterest.com/search/boards/?q=" . $search;
 
     //Creation de l'authentification
     if ($ProxyIp != '') {
@@ -72,23 +72,23 @@ if (isset($_GET["search"])) {
         $doc = file_get_contents($url, False, $cxContext);
     } else {
         $doc = file_get_contents($url);
+		file_put_contents('content.html',$doc);
     }
-
-    $classname = "pinImg fullBleed loaded fade";
+	
     $domdocument = new DOMDocument();
     libxml_use_internal_errors(true);
-    $domdocument->loadHTML($doc);
+    $domdocument->loadHTMLFile('content.html');
     $a = new DOMXPath($domdocument);
-    $imgs = $a->query('//img[contains(@class,"pinImg")]');
+    $imgs = $a->query('//img[contains(@class,"thumb")]');
+
 	echo '<h2>Résultat de la recherche : <span class="text-success">'.$search.'</span></h2>';
 	echo '<div class="row row-eq-height">';
     foreach ($imgs as $img) {
         $url_image = $img->getAttribute('src');
         $image_name = ImageName($url_image);
-        $url_big = str_replace('pinimg.com/236x/', 'pinimg.com/736x/', $url_image);
+        $url_big = str_replace('pinimg.com/75x75/', 'pinimg.com/736x/', $url_image);
         if (!file_exists("img/" . $image_name)) {
-            $image = file_get_contents($url_big);
-            file_put_contents("img/" . $image_name, $image);
+			copy($url_big, "img/".$image_name);
             echo ' <div class="col-md-2"><img src="' . $url_image . '"  class="img-responsive"/><p class="text-info text-center "> Récupérée</p></div>' . PHP_EOL;
         } else {
             echo '<div class="col-md-2"><img src="' . $url_image . '"  class="img-responsive"/><p class="text-danger text-center "> Existe deja</p></div>' . PHP_EOL;
@@ -96,9 +96,7 @@ if (isset($_GET["search"])) {
     }
 	echo '</div>';
 }
-
 ?>
-
   </div>
   <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
