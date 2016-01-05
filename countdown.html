@@ -1,0 +1,171 @@
+<html>
+    <head>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+        <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+        <script type="text/javascript">
+            function Countdown(options) {
+                var timer,
+                        instance = this,
+                        seconds = options.seconds || 10,
+                        updateStatus = options.onUpdateStatus || function () {},
+                        counterEnd = options.onCounterEnd || function () {};
+
+                function decrementCounter() {
+                    updateStatus(seconds);
+                    if (seconds === 0) {
+                        counterEnd();
+                        instance.stop();
+                    }
+                    seconds--;
+                }
+
+                this.start = function () {
+                    clearInterval(timer);
+                    timer = 0;
+                    seconds = options.seconds;
+                    timer = setInterval(decrementCounter, 1000);
+                };
+
+                this.stop = function () {
+                    clearInterval(timer);
+                };
+            }
+            $(document).ready(function () {
+                $("#btnVote").click(function () {
+                    $('.current').removeClass('current').hide().next().removeClass('hidden').addClass('current').trigger('classChange');
+
+                    if ($('.current').hasClass('last')) {
+                        $('#btnVote').hide();
+                        $('#btnValid').removeClass('hide');
+                    }
+
+
+                });
+                $('.col-md-12').on('classChange', function () {
+                    // do stuff
+                    var timetogo = $('.current').attr("data-time");
+                    console.log(timetogo);
+                    $('.progress-bar').width('0%');
+                    var myCounter = new Countdown({
+                        seconds: timetogo, // number of seconds to count down
+                        onUpdateStatus: function (sec) {
+                            console.log(sec);
+                            elapsed = timetogo - sec;
+                            $('.progress-bar').width(((elapsed / timetogo) * 100) + "%");
+                            $('.col-md-12').on('classChange', function () {
+                                myCounter.stop();
+                            });
+                        }, // callback for each second
+                        onCounterEnd: function () {
+                            //alert('counter ended!');
+                        } // final action
+                    });
+                    myCounter.stop();
+                    myCounter.start();
+                });
+
+                //Init du Timer
+                var timetogo = $('.current').attr("data-time");
+                var myCounter = new Countdown({
+                    seconds: timetogo, // number of seconds to count down
+                    onUpdateStatus: function (sec) {
+                        console.log(sec);
+                        elapsed = timetogo - sec;
+                        $('.progress-bar').width(((elapsed / timetogo) * 100) + "%");
+                        $('.col-md-12').on('classChange', function () {
+                            myCounter.stop();
+                        });
+
+                    }, // callback for each second
+                    onCounterEnd: function () {
+                        alert('counter1 ended!');
+                    } // final action
+                });
+
+                myCounter.start();
+
+
+            });
+
+
+
+
+
+        </script>
+
+    </head>
+    <body>
+
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10">
+                    <div class="col-md-12 current" id="slide-84" data-time="10">
+                        <img src="http://quiz.dev:8888/uploads/568c1f39abc7e.jpg" class="img-responsive"/>
+                        <div class="checkbox checkbox-inline checkbox-primary">
+                            <input type="checkbox" name="slide-84" value="5" class="reponsequiz" data-id="56"/>
+                            <label for="slide-84">A</label>
+                        </div>
+                        <div class="checkbox checkbox-inline checkbox-primary">
+                            <input type="checkbox" name="slide-84" value="10" class="reponsequiz" data-id="57"/>
+                            <label for="slide-84">B</label>
+                        </div>
+
+                    </div>
+                    <div class="col-md-12 hidden" id="slide-86" data-time="12">
+                        <img src="http://quiz.dev:8888/uploads/568c1f39abf32.jpg" class="img-responsive"/>
+                        <div class="checkbox checkbox-inline checkbox-primary">
+                            <input type="checkbox" name="slide-86" value="2" class="reponsequiz" data-id="58"/>
+                            <label for="slide-86">A</label>
+                        </div>
+                        <div class="checkbox checkbox-inline checkbox-primary">
+                            <input type="checkbox" name="slide-86" value="10" class="reponsequiz" data-id="59"/>
+                            <label for="slide-86">B</label>
+                        </div>
+
+                    </div>
+                    <div class="col-md-12 hidden" id="slide-85" data-time="15">
+                        <img src="http://quiz.dev:8888/uploads/568c1f39abd63.jpg" class="img-responsive"/>
+                        <div class="checkbox checkbox-inline checkbox-primary">
+                            <input type="checkbox" name="slide-85" value="5" class="reponsequiz" data-id="60"/>
+                            <label for="slide-85">A</label>
+                        </div>
+                        <div class="checkbox checkbox-inline checkbox-primary">
+                            <input type="checkbox" name="slide-85" value="10" class="reponsequiz" data-id="61"/>
+                            <label for="slide-85">B</label>
+                        </div>
+
+                    </div>
+                    <div class="col-md-12 hidden last" id="slide-87" data-time="16">
+                        <img src="http://quiz.dev:8888/uploads/568c1f39bef46.jpg" class="img-responsive"/>
+                        <div class="checkbox checkbox-inline checkbox-primary">
+                            <input type="checkbox" name="slide-87" value="5" class="reponsequiz" data-id="62"/>
+                            <label for="slide-87">A</label>
+                        </div>
+                        <div class="checkbox checkbox-inline checkbox-primary">
+                            <input type="checkbox" name="slide-87" value="10" class="reponsequiz" data-id="63"/>
+                            <label for="slide-87">B</label>
+                        </div>
+
+                    </div>
+                    <div class="hidden alert alert-success" id="messfinal">Merci de votre participation</div>
+                </div>
+                <div class="col-md-2">
+                    <div class="progress active progress-striped" id="progressouter">
+                        <div class="progress-bar" id="progress"></div>
+                    </div>
+                    <input type="button" class="btn" value="Suivant" id="btnVote"/>
+                    <input type="button" class="btn hide" value="Valider" id="btnValid"/>
+                    <h2>Points</h2>
+                    <span id="total">0</span>
+                </div>
+            </div>
+        </div>
+
+
+    </body>
+</html>
